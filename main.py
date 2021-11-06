@@ -1,6 +1,6 @@
 from flask import Flask,request,jsonify
 from flask_cors import CORS
-import os
+import os,pix
 
 app = Flask(__name__)
 CORS(app)
@@ -18,11 +18,13 @@ def get_data():
 @app.route("/webhooks",methods = ["POST"])
 def web_hooks():
      result = request.get_json()
-     data.append(result)
+     data.append(*result)
+     p  =pix.PixModel()
+     p.check_cob(txid= result[0].get("txid") )
      return jsonify({
             "message" : "sucess" }),200
 
 if __name__== '__main__':
     port = int(os.environ.get('PORT', 5000))
-    app.run(debug=True,host="0.0.0.0",port=port)
+    app.run(debug=True,port=port)
     #,host="0.0.0.0"
