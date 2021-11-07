@@ -4,6 +4,7 @@ import os,pix
 
 app = Flask(__name__)
 CORS(app)
+p  =pix.PixModel()
 
 data = []
 
@@ -19,12 +20,12 @@ def get_data():
 def web_hooks():
      result = request.get_json()
      data.append(*result)
-     p  =pix.PixModel()
+     
      p.check_cob(txid= dict(*result).get("txId") )
      return jsonify({
             "message" : "sucess" }),200
 
 if __name__== '__main__':
     port = int(os.environ.get('PORT', 5000))
-    app.run(debug=True,host="0.0.0.0",port=port)
+    app.run(debug=True,port=port)
     #,host="0.0.0.0"
